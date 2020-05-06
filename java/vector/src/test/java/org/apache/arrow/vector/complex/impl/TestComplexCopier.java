@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.compare.VectorEqualsVisitor;
 import org.apache.arrow.vector.complex.FixedSizeListVector;
 import org.apache.arrow.vector.complex.ListVector;
@@ -50,7 +50,7 @@ public class TestComplexCopier {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
   }
 
   @After

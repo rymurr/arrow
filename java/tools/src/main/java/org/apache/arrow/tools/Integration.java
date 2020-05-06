@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.ipc.ArrowFileReader;
 import org.apache.arrow.vector.ipc.ArrowFileWriter;
@@ -134,7 +134,7 @@ public class Integration {
     ARROW_TO_JSON(true, false) {
       @Override
       public void execute(File arrowFile, File jsonFile) throws IOException {
-        try (BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+        try (BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
              FileInputStream fileInputStream = new FileInputStream(arrowFile);
              ArrowFileReader arrowReader = new ArrowFileReader(fileInputStream.getChannel(),
                  allocator)) {
@@ -159,7 +159,7 @@ public class Integration {
     JSON_TO_ARROW(false, true) {
       @Override
       public void execute(File arrowFile, File jsonFile) throws IOException {
-        try (BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+        try (BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
              JsonFileReader reader = new JsonFileReader(jsonFile, allocator)) {
           Schema schema = reader.start();
           LOGGER.debug("Input file size: " + jsonFile.length());
@@ -182,7 +182,7 @@ public class Integration {
     VALIDATE(true, true) {
       @Override
       public void execute(File arrowFile, File jsonFile) throws IOException {
-        try (BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+        try (BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
              JsonFileReader jsonReader = new JsonFileReader(jsonFile, allocator);
              FileInputStream fileInputStream = new FileInputStream(arrowFile);
              ArrowFileReader arrowReader = new ArrowFileReader(fileInputStream.getChannel(),

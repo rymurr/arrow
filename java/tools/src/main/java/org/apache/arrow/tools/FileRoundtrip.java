@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.ipc.ArrowFileReader;
 import org.apache.arrow.vector.ipc.ArrowFileWriter;
@@ -81,7 +81,7 @@ public class FileRoundtrip {
       File inFile = validateFile("input", inFileName);
       File outFile = validateFile("output", outFileName);
 
-      try (BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+      try (BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
            FileInputStream fileInputStream = new FileInputStream(inFile);
            ArrowFileReader arrowReader = new ArrowFileReader(fileInputStream.getChannel(),
                allocator)) {

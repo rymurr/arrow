@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.types.TimeUnit;
 import org.apache.arrow.vector.types.Types;
 import org.apache.arrow.vector.types.Types.MinorType;
@@ -44,7 +44,7 @@ public class TestVectorAlloc {
 
   @Before
   public void init() {
-    rootAllocator = new RootAllocator(Long.MAX_VALUE);
+    rootAllocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
   }
 
   @After

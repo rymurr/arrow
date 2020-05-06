@@ -20,7 +20,7 @@ package org.apache.arrow.vector.util;
 import static junit.framework.TestCase.assertEquals;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.testing.ValueVectorDataPopulator;
 import org.junit.After;
@@ -36,7 +36,7 @@ public class TestVectorBatchAppender {
 
   @Before
   public void prepare() {
-    allocator = new RootAllocator(1024 * 1024);
+    allocator = DefaultBufferAllocator.create(1024 * 1024);
   }
 
   @After

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.TreeSet;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VarCharVector;
 import org.apache.arrow.vector.dictionary.Dictionary;
 import org.apache.arrow.vector.dictionary.DictionaryProvider;
@@ -59,7 +59,7 @@ public class TestDictionaryUtils {
 
   @Test
   public void testCreateSchema() {
-    try (BufferAllocator allocator = new RootAllocator(1024)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(1024)) {
       DictionaryEncoding dictionaryEncoding =
               new DictionaryEncoding(0, true, new ArrowType.Int(8, true));
       VarCharVector dictVec = new VarCharVector("dict vector", allocator);

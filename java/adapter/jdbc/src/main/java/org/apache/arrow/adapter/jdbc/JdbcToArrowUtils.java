@@ -55,7 +55,7 @@ import org.apache.arrow.adapter.jdbc.consumer.TimeConsumer;
 import org.apache.arrow.adapter.jdbc.consumer.TimestampConsumer;
 import org.apache.arrow.adapter.jdbc.consumer.TinyIntConsumer;
 import org.apache.arrow.adapter.jdbc.consumer.VarCharConsumer;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.Preconditions;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.BitVector;
@@ -108,7 +108,7 @@ public class JdbcToArrowUtils {
   public static Schema jdbcToArrowSchema(ResultSetMetaData rsmd, Calendar calendar) throws SQLException {
     Preconditions.checkNotNull(calendar, "Calendar object can't be null");
 
-    return jdbcToArrowSchema(rsmd, new JdbcToArrowConfig(new RootAllocator(0), calendar));
+    return jdbcToArrowSchema(rsmd, new JdbcToArrowConfig(DefaultBufferAllocator.create(0), calendar));
   }
 
   /**
@@ -325,7 +325,7 @@ public class JdbcToArrowUtils {
 
     Preconditions.checkNotNull(calendar, "Calendar object can't be null");
 
-    jdbcToArrowVectors(rs, root, new JdbcToArrowConfig(new RootAllocator(0), calendar));
+    jdbcToArrowVectors(rs, root, new JdbcToArrowConfig(DefaultBufferAllocator.create(0), calendar));
   }
 
   /**

@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.Float4Vector;
 import org.apache.arrow.vector.Float8Vector;
@@ -62,7 +62,7 @@ public class TestRangeEqualsVisitor {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
   }
 
   private static final Charset utf8Charset = Charset.forName("UTF-8");

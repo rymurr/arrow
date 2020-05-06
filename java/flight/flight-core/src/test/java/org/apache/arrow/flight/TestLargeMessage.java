@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.pojo.ArrowType;
@@ -38,7 +38,7 @@ public class TestLargeMessage {
    */
   @Test
   public void getLargeMessage() throws Exception {
-    try (final BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+    try (final BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
          final Producer producer = new Producer(a);
          final FlightServer s =
              FlightTestUtil.getStartedServer((location) -> FlightServer.builder(a, location, producer).build())) {
@@ -66,7 +66,7 @@ public class TestLargeMessage {
    */
   @Test
   public void putLargeMessage() throws Exception {
-    try (final BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+    try (final BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
          final Producer producer = new Producer(a);
          final FlightServer s =
              FlightTestUtil.getStartedServer((location) -> FlightServer.builder(a, location, producer).build()

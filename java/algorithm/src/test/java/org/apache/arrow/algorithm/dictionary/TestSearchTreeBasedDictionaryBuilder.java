@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.apache.arrow.algorithm.sort.DefaultVectorComparators;
 import org.apache.arrow.algorithm.sort.VectorValueComparator;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VarCharVector;
 import org.junit.After;
@@ -39,7 +39,7 @@ public class TestSearchTreeBasedDictionaryBuilder {
 
   @Before
   public void prepare() {
-    allocator = new RootAllocator(1024 * 1024);
+    allocator = DefaultBufferAllocator.create(1024 * 1024);
   }
 
   @After

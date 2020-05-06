@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.memory.util.hash.ArrowBufHasher;
 import org.apache.arrow.vector.ExtensionTypeVector;
 import org.apache.arrow.vector.FieldVector;
@@ -53,8 +53,8 @@ public class TestExtensionType {
   public void roundtripUuid() throws IOException {
     ExtensionTypeRegistry.register(new UuidType());
     final Schema schema = new Schema(Collections.singletonList(Field.nullable("a", new UuidType())));
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
-        final VectorSchemaRoot root = VectorSchemaRoot.create(schema, allocator)) {
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
+         final VectorSchemaRoot root = VectorSchemaRoot.create(schema, allocator)) {
       UUID u1 = UUID.randomUUID();
       UUID u2 = UUID.randomUUID();
       UuidVector vector = (UuidVector) root.getVector("a");
@@ -104,7 +104,7 @@ public class TestExtensionType {
   public void readUnderlyingType() throws IOException {
     ExtensionTypeRegistry.register(new UuidType());
     final Schema schema = new Schema(Collections.singletonList(Field.nullable("a", new UuidType())));
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final VectorSchemaRoot root = VectorSchemaRoot.create(schema, allocator)) {
       UUID u1 = UUID.randomUUID();
       UUID u2 = UUID.randomUUID();
@@ -162,7 +162,7 @@ public class TestExtensionType {
   public void testNullCheck() {
     NullPointerException e = assertThrows(NullPointerException.class,
         () -> {
-          try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+          try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
                final ExtensionTypeVector vector = new UuidVector("uuid", allocator, null)) {
             vector.getField();
             vector.allocateNewSafe();

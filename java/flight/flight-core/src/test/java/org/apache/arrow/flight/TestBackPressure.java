@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.arrow.flight.perf.PerformanceTestServer;
 import org.apache.arrow.flight.perf.TestPerf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.Types.MinorType;
 import org.apache.arrow.vector.types.pojo.Field;
@@ -44,7 +44,7 @@ public class TestBackPressure {
   @Test
   public void ensureIndependentSteams() throws Exception {
     try (
-        final BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        final BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         final PerformanceTestServer server = FlightTestUtil.getStartedServer(
             (location) -> (new PerformanceTestServer(a, location)));
         final FlightClient client = FlightClient.builder(a, server.getLocation()).build()
@@ -81,7 +81,7 @@ public class TestBackPressure {
     final long epsilon = 1000;
 
     AtomicLong sleepTime = new AtomicLong(0);
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE)) {
 
       final FlightProducer producer = new NoOpFlightProducer() {
 

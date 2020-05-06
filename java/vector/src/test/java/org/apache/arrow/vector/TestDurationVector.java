@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 
 import java.time.Duration;
 
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DirtyRootAllocator;
 import org.apache.arrow.vector.holders.NullableDurationHolder;
 import org.apache.arrow.vector.types.TimeUnit;
 import org.apache.arrow.vector.types.pojo.ArrowType;
@@ -31,7 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestDurationVector {
-  RootAllocator allocator;
+  DirtyRootAllocator allocator;
 
   @Before
   public void init() {

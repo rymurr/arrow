@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VarBinaryVector;
 import org.apache.arrow.vector.VarCharVector;
@@ -58,7 +58,7 @@ public class TestLinearDictionaryEncoder {
 
   @Before
   public void prepare() {
-    allocator = new RootAllocator(1024 * 1024);
+    allocator = DefaultBufferAllocator.create(1024 * 1024);
   }
 
   @After

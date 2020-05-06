@@ -18,8 +18,8 @@
 package org.apache.arrow.vector;
 
 import org.apache.arrow.memory.BufferAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.memory.OutOfMemoryException;
-import org.apache.arrow.memory.RootAllocator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class TestOutOfMemoryForValueVector {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(200); // Start with low memory limit
+    allocator = DefaultBufferAllocator.create(200); // Start with low memory limit
   }
 
   @Test(expected = OutOfMemoryException.class)

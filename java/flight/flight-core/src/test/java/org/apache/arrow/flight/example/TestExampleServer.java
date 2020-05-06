@@ -28,7 +28,7 @@ import org.apache.arrow.flight.FlightStream;
 import org.apache.arrow.flight.FlightTestUtil;
 import org.apache.arrow.flight.Location;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.AutoCloseables;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
@@ -49,7 +49,7 @@ public class TestExampleServer {
 
   @Before
   public void start() throws IOException {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
 
     Location l = Location.forGrpcInsecure(FlightTestUtil.LOCALHOST, 12233);
     if (!Boolean.getBoolean("disableServer")) {

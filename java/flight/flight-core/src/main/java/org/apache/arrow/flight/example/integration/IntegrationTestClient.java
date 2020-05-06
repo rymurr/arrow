@@ -35,7 +35,7 @@ import org.apache.arrow.flight.Location;
 import org.apache.arrow.flight.PutResult;
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VectorLoader;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.VectorUnloader;
@@ -88,8 +88,8 @@ class IntegrationTestClient {
     final int port = Integer.parseInt(cmd.getOptionValue("port", "31337"));
 
     final Location defaultLocation = Location.forGrpcInsecure(host, port);
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
-        final FlightClient client = FlightClient.builder(allocator, defaultLocation).build()) {
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
+         final FlightClient client = FlightClient.builder(allocator, defaultLocation).build()) {
 
       final String inputPath = cmd.getOptionValue("j");
       testStream(allocator, defaultLocation, client, inputPath);

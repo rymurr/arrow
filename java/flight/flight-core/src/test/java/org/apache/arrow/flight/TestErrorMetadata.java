@@ -19,7 +19,7 @@ package org.apache.arrow.flight;
 
 import org.apache.arrow.flight.perf.impl.PerfOuterClass;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class TestErrorMetadata {
                 .setRecordsPerBatch(1000)
                 .setRecordsPerStream(1000000L)
                 .build();
-    try (final BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
         final FlightServer s =
              FlightTestUtil.getStartedServer(
                (location) -> FlightServer.builder(allocator, location, new TestFlightProducer(perf)).build());

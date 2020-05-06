@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VarCharVector;
 import org.junit.After;
@@ -38,7 +38,7 @@ public class TestHashTableBasedDictionaryBuilder {
 
   @Before
   public void prepare() {
-    allocator = new RootAllocator(1024 * 1024);
+    allocator = DefaultBufferAllocator.create(1024 * 1024);
   }
 
   @After

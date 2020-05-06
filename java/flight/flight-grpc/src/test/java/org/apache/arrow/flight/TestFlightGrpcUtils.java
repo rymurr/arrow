@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.arrow.flight.auth.ServerAuthHandler;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class TestFlightGrpcUtils {
   public void testMultipleGrpcServices() throws IOException {
 
     //Defines flight service
-    final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
     final NoOpFlightProducer producer = new NoOpFlightProducer();
     final ServerAuthHandler authHandler = ServerAuthHandler.NO_OP;
     final ExecutorService exec = Executors.newCachedThreadPool();

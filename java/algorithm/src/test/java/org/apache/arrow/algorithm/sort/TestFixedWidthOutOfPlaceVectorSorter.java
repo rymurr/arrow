@@ -20,7 +20,7 @@ package org.apache.arrow.algorithm.sort;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.Float4Vector;
 import org.apache.arrow.vector.Float8Vector;
@@ -41,7 +41,7 @@ public class TestFixedWidthOutOfPlaceVectorSorter {
 
   @Before
   public void prepare() {
-    allocator = new RootAllocator(1024 * 1024);
+    allocator = DefaultBufferAllocator.create(1024 * 1024);
   }
 
   @After

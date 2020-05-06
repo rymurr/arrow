@@ -22,8 +22,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.apache.arrow.memory.ArrowBuf;
+import org.apache.arrow.memory.BufferAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.memory.ReferenceManager;
-import org.apache.arrow.memory.RootAllocator;
 import org.junit.Test;
 
 import io.netty.buffer.PooledByteBufAllocatorL;
@@ -71,8 +72,8 @@ public class TestBitVectorHelper {
   @Test
   public void testAllBitsNull() {
     final int bufferLength = 32 * 1024;
-    try (RootAllocator allocator = new RootAllocator(bufferLength);
-        ArrowBuf validityBuffer = allocator.buffer(bufferLength)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(bufferLength);
+         ArrowBuf validityBuffer = allocator.buffer(bufferLength)) {
 
       validityBuffer.setZero(0, bufferLength);
       int bitLength = 1024;
@@ -112,7 +113,7 @@ public class TestBitVectorHelper {
   @Test
   public void testAllBitsSet() {
     final int bufferLength = 32 * 1024;
-    try (RootAllocator allocator = new RootAllocator(bufferLength);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(bufferLength);
          ArrowBuf validityBuffer = allocator.buffer(bufferLength)) {
 
       PlatformDependent.setMemory(validityBuffer.memoryAddress(), bufferLength, (byte) -1);
@@ -152,7 +153,7 @@ public class TestBitVectorHelper {
 
   @Test
   public void testConcatBits() {
-    try (RootAllocator allocator = new RootAllocator(1024 * 1024)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(1024 * 1024)) {
       try (ArrowBuf buf1 = allocator.buffer(1024);
            ArrowBuf buf2 = allocator.buffer(1024);
            ArrowBuf output = allocator.buffer(1024)) {
@@ -188,7 +189,7 @@ public class TestBitVectorHelper {
 
   @Test
   public void testConcatBitsInPlace() {
-    try (RootAllocator allocator = new RootAllocator(1024 * 1024)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(1024 * 1024)) {
       try (ArrowBuf buf1 = allocator.buffer(1024);
            ArrowBuf buf2 = allocator.buffer(1024)) {
 

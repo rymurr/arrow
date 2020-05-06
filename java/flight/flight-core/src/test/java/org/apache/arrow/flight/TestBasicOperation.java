@@ -32,7 +32,7 @@ import org.apache.arrow.flight.FlightClient.ClientStreamListener;
 import org.apache.arrow.flight.impl.Flight;
 import org.apache.arrow.flight.impl.Flight.FlightDescriptor.DescriptorType;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.pojo.ArrowType;
@@ -249,7 +249,7 @@ public class TestBasicOperation {
 
   private void test(BiConsumer<FlightClient, BufferAllocator> consumer) throws Exception {
     try (
-        BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         Producer producer = new Producer(a);
         FlightServer s =
             FlightTestUtil.getStartedServer(

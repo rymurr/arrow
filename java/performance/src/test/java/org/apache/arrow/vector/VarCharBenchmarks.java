@@ -20,7 +20,7 @@ package org.apache.arrow.vector;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -55,7 +55,7 @@ public class VarCharBenchmarks {
    */
   @Setup
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
     vector = new VarCharVector("vector", allocator);
     vector.allocateNew(ALLOCATOR_CAPACITY / 4, VECTOR_LENGTH);
 

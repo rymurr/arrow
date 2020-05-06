@@ -27,7 +27,7 @@ import org.apache.arrow.flight.FlightClient.ClientStreamListener;
 import org.apache.arrow.flight.FlightServerMiddleware.Factory;
 import org.apache.arrow.flight.FlightServerMiddleware.Key;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.pojo.Schema;
 import org.junit.Assert;
@@ -258,7 +258,7 @@ public class TestServerMiddleware {
 
     @Override
     public void getStream(CallContext context, Ticket ticket, ServerStreamListener listener) {
-      try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+      try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
           final VectorSchemaRoot root = VectorSchemaRoot.create(new Schema(Collections.emptyList()), allocator)) {
         listener.start(root);
         listener.completed();
@@ -321,7 +321,7 @@ public class TestServerMiddleware {
    */
   static <T extends FlightServerMiddleware> void test(FlightProducer producer, List<ServerMiddlewarePair<T>> middleware,
       BiConsumer<BufferAllocator, FlightClient> body) {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE)) {
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE)) {
       final FlightServer server = FlightTestUtil
           .getStartedServer(location -> {
             final FlightServer.Builder builder = FlightServer.builder(allocator, location, producer);

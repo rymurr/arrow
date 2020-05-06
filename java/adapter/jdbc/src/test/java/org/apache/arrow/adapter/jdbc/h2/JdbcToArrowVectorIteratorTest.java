@@ -17,7 +17,14 @@
 
 package org.apache.arrow.adapter.jdbc.h2;
 
-import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.*;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getBinaryValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getBooleanValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getCharArray;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getDecimalValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getDoubleValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getFloatValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getIntValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getLongValues;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -35,7 +42,7 @@ import org.apache.arrow.adapter.jdbc.JdbcToArrowConfig;
 import org.apache.arrow.adapter.jdbc.JdbcToArrowConfigBuilder;
 import org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper;
 import org.apache.arrow.adapter.jdbc.Table;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.BitVector;
 import org.apache.arrow.vector.DateDayVector;
@@ -71,7 +78,8 @@ public class JdbcToArrowVectorIteratorTest extends JdbcToArrowTest {
   @Override
   public void testJdbcToArrowValues() throws SQLException, IOException {
 
-    JdbcToArrowConfig config = new JdbcToArrowConfigBuilder(new RootAllocator(Integer.MAX_VALUE),
+    JdbcToArrowConfig config = new JdbcToArrowConfigBuilder(
+        DefaultBufferAllocator.create(Integer.MAX_VALUE),
         Calendar.getInstance()).setTargetBatchSize(3).build();
 
     ArrowVectorIterator iterator =

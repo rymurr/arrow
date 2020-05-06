@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,7 +70,7 @@ public class TestClientMiddleware {
       TestServerMiddleware.ServerMiddlewarePair<T> serverMiddleware,
       List<FlightClientMiddleware.Factory> clientMiddleware,
       BiConsumer<BufferAllocator, FlightClient> body) {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE)) {
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE)) {
       final FlightServer server = FlightTestUtil
           .getStartedServer(location -> {
             final FlightServer.Builder builder = FlightServer.builder(allocator, location, producer);

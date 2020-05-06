@@ -22,7 +22,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.Preconditions;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.ipc.ArrowStreamReader;
@@ -113,7 +113,7 @@ public class EchoServer {
      */
     public void run() throws IOException {
       // Read the entire input stream and write it back
-      try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE)) {
+      try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE)) {
         ArrowStreamReader reader = new ArrowStreamReader(socket.getInputStream(), allocator);
         VectorSchemaRoot root = reader.getVectorSchemaRoot();
         // load the first batch before instantiating the writer so that we have any dictionaries

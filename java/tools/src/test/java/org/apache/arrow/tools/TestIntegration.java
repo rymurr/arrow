@@ -33,7 +33,7 @@ import java.io.StringReader;
 import java.util.Map;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.tools.Integration.Command;
 import org.apache.arrow.vector.complex.NonNullableStructVector;
 import org.apache.arrow.vector.complex.impl.ComplexWriterImpl;
@@ -110,7 +110,7 @@ public class TestIntegration {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Integer.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
   }
 
   @After

@@ -32,7 +32,7 @@ import org.apache.arrow.flight.TestBasicOperation.Producer;
 import org.apache.arrow.flight.auth.ServerAuthHandler;
 import org.apache.arrow.flight.impl.FlightServiceGrpc;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.junit.Assert;
@@ -54,7 +54,7 @@ public class TestServerOptions {
     final Consumer<NettyServerBuilder> consumer = (builder) -> consumerCalled.set(true);
 
     try (
-        BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         Producer producer = new Producer(a);
         FlightServer s =
             FlightTestUtil.getStartedServer(
@@ -72,7 +72,7 @@ public class TestServerOptions {
   public void defaultExecutorClosed() throws Exception {
     final ExecutorService executor;
     try (
-        BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         FlightServer server =
             FlightTestUtil.getStartedServer(
                 (location) -> FlightServer.builder(a, location, new NoOpFlightProducer())
@@ -92,7 +92,7 @@ public class TestServerOptions {
     final ExecutorService executor = Executors.newSingleThreadExecutor();
     try {
       try (
-          BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+          BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
           FlightServer server =
               FlightTestUtil.getStartedServer(
                   (location) -> FlightServer.builder(a, location, new NoOpFlightProducer())
@@ -117,7 +117,7 @@ public class TestServerOptions {
     Assume.assumeTrue("The domain socket path is not too long", domainSocket.getAbsolutePath().length() < 100);
     final Location location = Location.forGrpcDomainSocket(domainSocket.getAbsolutePath());
     try (
-        BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         Producer producer = new Producer(a);
         FlightServer s =
             FlightTestUtil.getStartedServer(
@@ -142,7 +142,7 @@ public class TestServerOptions {
   public void checkReflectionMetadata() {
     // This metadata is needed for gRPC reflection to work.
     final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE)) {
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE)) {
       final FlightBindingService service = new FlightBindingService(allocator, new NoOpFlightProducer(),
           ServerAuthHandler.NO_OP, executorService);
       final ServerServiceDefinition definition = service.bindService();

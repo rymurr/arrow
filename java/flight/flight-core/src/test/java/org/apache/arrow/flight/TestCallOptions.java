@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class TestCallOptions {
 
   void test(Consumer<FlightClient> testFn) {
     try (
-        BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         Producer producer = new Producer(a);
         FlightServer s =
             FlightTestUtil.getStartedServer((location) -> FlightServer.builder(a, location, producer).build());

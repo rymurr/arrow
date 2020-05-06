@@ -46,7 +46,7 @@ import org.apache.arrow.flatbuf.Message;
 import org.apache.arrow.flatbuf.RecordBatch;
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.AutoCloseables;
 import org.apache.arrow.util.Collections2;
 import org.apache.arrow.vector.FieldVector;
@@ -95,7 +95,7 @@ public class TestArrowReaderWriter {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
 
     dictionaryVector1 = newVarCharVector("D1", allocator);
     setVector(dictionaryVector1,

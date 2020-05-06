@@ -32,7 +32,7 @@ import org.apache.arrow.flight.FlightTestUtil;
 import org.apache.arrow.flight.NoOpFlightProducer;
 import org.apache.arrow.flight.Ticket;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.AutoCloseables;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.Types;
@@ -95,7 +95,7 @@ public class TestBasicAuth {
 
   @Before
   public void setup() throws IOException {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
     final BasicServerAuthHandler.BasicAuthValidator validator = new BasicServerAuthHandler.BasicAuthValidator() {
 
       @Override

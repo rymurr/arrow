@@ -20,7 +20,7 @@ package org.apache.arrow.vector;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.complex.impl.IntWriterImpl;
 import org.apache.arrow.vector.holders.NullableIntHolder;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -52,7 +52,7 @@ public class IntBenchmarks {
 
   @Setup
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
     vector = new IntVector("vector", allocator);
     vector.allocateNew(VECTOR_LENGTH);
     vector.setValueCount(VECTOR_LENGTH);

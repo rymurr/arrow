@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 
 /**
  * Integration test for a vector with a large (more than 2GB) {@link org.apache.arrow.memory.ArrowBuf} as
@@ -41,8 +41,8 @@ public class TestLargeVector {
     final long bufSize = 4 * 1024 * 1024 * 1024L;
     final int vecLength = (int) (bufSize / BigIntVector.TYPE_WIDTH);
 
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
-        BigIntVector largeVec = new BigIntVector("vec", allocator)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
+         BigIntVector largeVec = new BigIntVector("vec", allocator)) {
       largeVec.allocateNew(vecLength);
 
       System.out.println("Successfully allocated a vector with capacity " + vecLength);
@@ -75,7 +75,7 @@ public class TestLargeVector {
     final long bufSize = 4 * 1024 * 1024 * 1024L;
     final int vecLength = (int) (bufSize / IntVector.TYPE_WIDTH);
 
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
          IntVector largeVec = new IntVector("vec", allocator)) {
       largeVec.allocateNew(vecLength);
 
@@ -109,7 +109,7 @@ public class TestLargeVector {
     final long bufSize = 4 * 1024 * 1024 * 1024L;
     final int vecLength = (int) (bufSize / DecimalVector.TYPE_WIDTH);
 
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
          DecimalVector largeVec = new DecimalVector("vec", allocator, 38, 16)) {
       largeVec.allocateNew(vecLength);
 
@@ -146,7 +146,7 @@ public class TestLargeVector {
     final int typeWidth = 8;
     final int vecLength = (int) (bufSize / typeWidth);
 
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
          FixedSizeBinaryVector largeVec = new FixedSizeBinaryVector("vec", allocator, typeWidth)) {
       largeVec.allocateNew(vecLength);
 

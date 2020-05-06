@@ -20,7 +20,7 @@ package org.apache.arrow.adapter.jdbc;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.apache.arrow.memory.BaseAllocator;
+import org.apache.arrow.memory.BufferAllocator;
 import org.apache.arrow.util.Preconditions;
 
 /**
@@ -28,7 +28,7 @@ import org.apache.arrow.util.Preconditions;
  */
 public class JdbcToArrowConfigBuilder {
   private Calendar calendar;
-  private BaseAllocator allocator;
+  private BufferAllocator allocator;
   private boolean includeMetadata;
   private Map<Integer, JdbcFieldInfo> arraySubTypesByColumnIndex;
   private Map<String, JdbcFieldInfo> arraySubTypesByColumnName;
@@ -63,7 +63,7 @@ public class JdbcToArrowConfigBuilder {
    * @param allocator The Arrow Vector memory allocator.
    * @param calendar The calendar to use when constructing timestamp fields.
    */
-  public JdbcToArrowConfigBuilder(BaseAllocator allocator, Calendar calendar) {
+  public JdbcToArrowConfigBuilder(BufferAllocator allocator, Calendar calendar) {
     this();
 
     Preconditions.checkNotNull(allocator, "Memory allocator cannot be null");
@@ -93,7 +93,7 @@ public class JdbcToArrowConfigBuilder {
    * @param allocator The Arrow Vector memory allocator.
    * @param calendar The calendar to use when constructing timestamp fields.
    */
-  public JdbcToArrowConfigBuilder(BaseAllocator allocator, Calendar calendar, boolean includeMetadata) {
+  public JdbcToArrowConfigBuilder(BufferAllocator allocator, Calendar calendar, boolean includeMetadata) {
     this(allocator, calendar);
     this.includeMetadata = includeMetadata;
   }
@@ -104,7 +104,7 @@ public class JdbcToArrowConfigBuilder {
    * @param allocator the allocator to set.
    * @exception NullPointerException if <code>allocator</code> is null.
    */
-  public JdbcToArrowConfigBuilder setAllocator(BaseAllocator allocator) {
+  public JdbcToArrowConfigBuilder setAllocator(BufferAllocator allocator) {
     Preconditions.checkNotNull(allocator, "Memory allocator cannot be null");
     this.allocator = allocator;
     return this;
@@ -162,7 +162,7 @@ public class JdbcToArrowConfigBuilder {
 
   /**
    * This builds the {@link JdbcToArrowConfig} from the provided
-   * {@link BaseAllocator} and {@link Calendar}.
+   * {@link BufferAllocator} and {@link Calendar}.
    *
    * @return The built {@link JdbcToArrowConfig}
    * @throws NullPointerException if either the allocator or calendar was not set.

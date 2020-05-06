@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.FieldVector;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.TinyIntVector;
@@ -96,7 +96,7 @@ public class EchoServerTest {
                               int batches)
       throws UnknownHostException, IOException {
     VectorSchemaRoot root = new VectorSchemaRoot(asList(field), asList((FieldVector) vector), 0);
-    try (BufferAllocator alloc = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator alloc = DefaultBufferAllocator.create(Long.MAX_VALUE);
          Socket socket = new Socket("localhost", serverPort);
          ArrowStreamWriter writer = new ArrowStreamWriter(root, null, socket.getOutputStream());
          ArrowStreamReader reader = new ArrowStreamReader(socket.getInputStream(), alloc)) {
@@ -134,7 +134,7 @@ public class EchoServerTest {
 
   @Test
   public void basicTest() throws InterruptedException, IOException {
-    BufferAllocator alloc = new RootAllocator(Long.MAX_VALUE);
+    BufferAllocator alloc = DefaultBufferAllocator.create(Long.MAX_VALUE);
 
     Field field = new Field(
         "testField",
@@ -157,7 +157,7 @@ public class EchoServerTest {
   @Test
   public void testFlatDictionary() throws IOException {
     DictionaryEncoding writeEncoding = new DictionaryEncoding(1L, false, null);
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
          IntVector writeVector =
              new IntVector(
                  "varchar",
@@ -221,7 +221,7 @@ public class EchoServerTest {
   @Test
   public void testNestedDictionary() throws IOException {
     DictionaryEncoding writeEncoding = new DictionaryEncoding(2L, false, null);
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
          VarCharVector writeDictionaryVector =
              new VarCharVector("dictionary", FieldType.nullable(VARCHAR.getType()), allocator);
          ListVector writeVector = ListVector.empty("list", allocator)) {

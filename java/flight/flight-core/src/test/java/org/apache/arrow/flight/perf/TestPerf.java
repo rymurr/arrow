@@ -32,7 +32,7 @@ import org.apache.arrow.flight.FlightTestUtil;
 import org.apache.arrow.flight.Ticket;
 import org.apache.arrow.flight.perf.impl.PerfOuterClass.Perf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.Types.MinorType;
@@ -85,7 +85,7 @@ public class TestPerf {
 
     for (int i = 0; i < numRuns; i++) {
       try (
-          final BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+          final BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
           final PerformanceTestServer server =
               FlightTestUtil.getStartedServer((location) -> new PerformanceTestServer(a, location));
           final FlightClient client = FlightClient.builder(a, server.getLocation()).build();

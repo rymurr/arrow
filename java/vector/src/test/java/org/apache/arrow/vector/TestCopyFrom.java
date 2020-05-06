@@ -18,9 +18,10 @@
 package org.apache.arrow.vector;
 
 import static org.apache.arrow.vector.TestUtils.newVector;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
@@ -28,7 +29,7 @@ import java.time.Duration;
 import java.time.Period;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.types.Types.MinorType;
 import org.junit.After;
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class TestCopyFrom {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
   }
 
   @After

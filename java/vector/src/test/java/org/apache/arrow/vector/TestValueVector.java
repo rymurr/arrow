@@ -36,10 +36,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.arrow.memory.ArrowBuf;
-import org.apache.arrow.memory.BaseAllocator;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.memory.util.ArrowBufPointer;
+import org.apache.arrow.memory.util.CommonUtil;
 import org.apache.arrow.vector.compare.Range;
 import org.apache.arrow.vector.compare.RangeEqualsVisitor;
 import org.apache.arrow.vector.compare.VectorEqualsVisitor;
@@ -74,7 +74,7 @@ public class TestValueVector {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
   }
 
   private static final Charset utf8Charset = Charset.forName("UTF-8");
@@ -1961,22 +1961,22 @@ public class TestValueVector {
       vector.setInitialCapacity(defaultCapacity);
       vector.allocateNew();
       assertEquals(defaultCapacity, vector.getValueCapacity());
-      assertEquals(BaseAllocator.nextPowerOfTwo(defaultCapacity * 8), vector.getDataBuffer().capacity());
+      assertEquals(CommonUtil.nextPowerOfTwo(defaultCapacity * 8), vector.getDataBuffer().capacity());
 
       vector.setInitialCapacity(defaultCapacity, 1);
       vector.allocateNew();
       assertEquals(defaultCapacity, vector.getValueCapacity());
-      assertEquals(BaseAllocator.nextPowerOfTwo(defaultCapacity), vector.getDataBuffer().capacity());
+      assertEquals(CommonUtil.nextPowerOfTwo(defaultCapacity), vector.getDataBuffer().capacity());
 
       vector.setInitialCapacity(defaultCapacity, 0.1);
       vector.allocateNew();
       assertEquals(defaultCapacity, vector.getValueCapacity());
-      assertEquals(BaseAllocator.nextPowerOfTwo((int)(defaultCapacity * 0.1)), vector.getDataBuffer().capacity());
+      assertEquals(CommonUtil.nextPowerOfTwo((int)(defaultCapacity * 0.1)), vector.getDataBuffer().capacity());
 
       vector.setInitialCapacity(defaultCapacity, 0.01);
       vector.allocateNew();
       assertEquals(defaultCapacity, vector.getValueCapacity());
-      assertEquals(BaseAllocator.nextPowerOfTwo((int)(defaultCapacity * 0.01)), vector.getDataBuffer().capacity());
+      assertEquals(CommonUtil.nextPowerOfTwo((int)(defaultCapacity * 0.01)), vector.getDataBuffer().capacity());
 
       vector.setInitialCapacity(5, 0.01);
       vector.allocateNew();

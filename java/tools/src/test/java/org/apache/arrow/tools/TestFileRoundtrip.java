@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +40,7 @@ public class TestFileRoundtrip {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Integer.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
   }
 
   @After

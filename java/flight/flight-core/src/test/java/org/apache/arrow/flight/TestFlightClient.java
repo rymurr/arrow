@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.arrow.flight.FlightClient.ClientStreamListener;
 import org.apache.arrow.flight.TestBasicOperation.Producer;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.FieldVector;
 import org.apache.arrow.vector.ValueVector;
 import org.apache.arrow.vector.VarCharVector;
@@ -51,7 +51,7 @@ public class TestFlightClient {
    */
   @Test
   public void independentShutdown() throws Exception {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final FlightServer server = FlightTestUtil.getStartedServer(
             location -> FlightServer.builder(allocator, location,
                 new Producer(allocator)).build())) {
@@ -80,7 +80,7 @@ public class TestFlightClient {
     final Schema expectedSchema = new Schema(Collections
         .singletonList(new Field("encoded",
             new FieldType(true, new ArrowType.Int(32, true), new DictionaryEncoding(1L, false, null)), null)));
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final BufferAllocator serverAllocator = allocator.newChildAllocator("flight-server", 0, Integer.MAX_VALUE);
         final FlightServer server = FlightTestUtil.getStartedServer(
             location -> FlightServer.builder(serverAllocator, location,
@@ -113,7 +113,7 @@ public class TestFlightClient {
   @Ignore // Unfortunately this test is flaky in CI.
   @Test
   public void ownDictionaries() throws Exception {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final BufferAllocator serverAllocator = allocator.newChildAllocator("flight-server", 0, Integer.MAX_VALUE);
         final FlightServer server = FlightTestUtil.getStartedServer(
             location -> FlightServer.builder(serverAllocator, location,
@@ -138,7 +138,7 @@ public class TestFlightClient {
   @Ignore // Unfortunately this test is flaky in CI.
   @Test
   public void useDictionariesAfterClose() throws Exception {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final BufferAllocator serverAllocator = allocator.newChildAllocator("flight-server", 0, Integer.MAX_VALUE);
         final FlightServer server = FlightTestUtil.getStartedServer(
             location -> FlightServer.builder(serverAllocator, location, new DictionaryProducer(serverAllocator))

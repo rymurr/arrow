@@ -20,7 +20,7 @@ package org.apache.arrow.flight.example.integration;
 import org.apache.arrow.flight.Location;
 import org.apache.arrow.flight.example.ExampleFlightServer;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.AutoCloseables;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -45,7 +45,7 @@ class IntegrationTestServer {
     CommandLine cmd = parser.parse(options, args, false);
     final int port = Integer.parseInt(cmd.getOptionValue("port", "31337"));
 
-    final BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    final BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
     final ExampleFlightServer efs = new ExampleFlightServer(allocator, Location.forGrpcInsecure("localhost", port));
     efs.start();
     efs.getStore().setLocation(Location.forGrpcInsecure("localhost", efs.getPort()));

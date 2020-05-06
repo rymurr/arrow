@@ -68,7 +68,8 @@ public class PutResult implements AutoCloseable {
     if (applicationMetadata == null) {
       return Flight.PutResult.getDefaultInstance();
     }
-    return Flight.PutResult.newBuilder().setAppMetadata(ByteString.copyFrom(applicationMetadata.nioBuffer())).build();
+    return Flight.PutResult.newBuilder().setAppMetadata(ByteString.copyFrom(
+        applicationMetadata.nioBuffer())).build();
   }
 
   /**

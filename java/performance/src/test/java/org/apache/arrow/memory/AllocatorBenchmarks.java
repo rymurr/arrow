@@ -19,7 +19,6 @@ package org.apache.arrow.memory;
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.rounding.RoundingPolicy;
 import org.apache.arrow.memory.rounding.SegmentRoundingPolicy;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -46,7 +45,7 @@ public class AllocatorBenchmarks {
     final int bufferSize = 1024;
     final int numBuffers = 1024;
 
-    try (RootAllocator allocator = new RootAllocator(numBuffers * bufferSize)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(numBuffers * bufferSize)) {
       ArrowBuf[] buffers = new ArrowBuf[numBuffers];
 
       for (int i = 0; i < numBuffers; i++) {
@@ -71,7 +70,10 @@ public class AllocatorBenchmarks {
     final int segmentSize = 1024;
 
     RoundingPolicy policy = new SegmentRoundingPolicy(segmentSize);
-    try (RootAllocator allocator = new RootAllocator(AllocationListener.NOOP, bufferSize * numBuffers, policy)) {
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(BaseAllocator.configBuilder()
+        .maxAllocation(bufferSize * numBuffers)
+        .roundingPolicy(policy)
+        .build())) {
       ArrowBuf[] buffers = new ArrowBuf[numBuffers];
 
       for (int i = 0; i < numBuffers; i++) {

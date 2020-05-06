@@ -22,7 +22,7 @@ import java.math.BigInteger;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class DecimalUtilityTest {
 
   @Test
   public void testSetByteArrayInDecimalArrowBuf() {
-    try (BufferAllocator allocator = new RootAllocator(128);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(128);
          ArrowBuf buf = allocator.buffer(16);
     ) {
       int [] intValues = new int [] {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
@@ -69,7 +69,7 @@ public class DecimalUtilityTest {
 
   @Test
   public void testSetBigDecimalInDecimalArrowBuf() {
-    try (BufferAllocator allocator = new RootAllocator(128);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(128);
          ArrowBuf buf = allocator.buffer(16);
     ) {
       int [] intValues = new int [] {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};

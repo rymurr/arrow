@@ -20,7 +20,7 @@ package org.apache.arrow.vector;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.ipc.message.ArrowRecordBatch;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -59,7 +59,7 @@ public class VectorUnloaderBenchmark {
    */
   @Setup(Level.Trial)
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
   }
 
   @Setup(Level.Invocation)

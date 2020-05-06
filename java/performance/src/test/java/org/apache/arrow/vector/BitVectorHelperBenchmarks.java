@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.ipc.message.ArrowFieldNode;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -63,7 +63,7 @@ public class BitVectorHelperBenchmarks {
      */
     @Setup(Level.Trial)
     public void prepare() {
-      allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+      allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
       validityBuffer = allocator.buffer(VALIDITY_BUFFER_CAPACITY / 8);
 
       for (int i = 0;i < VALIDITY_BUFFER_CAPACITY; i++) {
@@ -129,7 +129,7 @@ public class BitVectorHelperBenchmarks {
      */
     @Setup(Level.Trial)
     public void prepare() {
-      allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+      allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
       validityBuffer = allocator.buffer(VALIDITY_BUFFER_CAPACITY / 8);
 
       for (int i = 0; i < VALIDITY_BUFFER_CAPACITY; i++) {
@@ -186,7 +186,7 @@ public class BitVectorHelperBenchmarks {
      */
     @Setup(Level.Trial)
     public void prepare() {
-      allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+      allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
       validityBuffer = allocator.buffer(VALIDITY_BUFFER_CAPACITY / 8);
     }
 

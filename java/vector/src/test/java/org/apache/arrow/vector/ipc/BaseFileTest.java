@@ -35,7 +35,7 @@ import java.util.List;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.Collections2;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.DateMilliVector;
@@ -100,7 +100,7 @@ public class BaseFileTest {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Integer.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
   }
 
   @After

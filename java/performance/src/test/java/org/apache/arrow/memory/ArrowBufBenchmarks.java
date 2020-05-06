@@ -51,7 +51,7 @@ public class ArrowBufBenchmarks {
    */
   @Setup
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
     buffer = allocator.buffer(BUFFER_CAPACITY);
   }
 

@@ -23,7 +23,7 @@ import java.util.Optional;
 import org.apache.arrow.flight.auth.ClientAuthHandler;
 import org.apache.arrow.flight.auth.ServerAuthHandler;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Test;
 
 public class TestAuth {
@@ -31,7 +31,7 @@ public class TestAuth {
   /** An auth handler that does not send messages should not block the server forever. */
   @Test(expected = RuntimeException.class)
   public void noMessages() throws Exception {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final FlightServer s = FlightTestUtil
             .getStartedServer(
                 location -> FlightServer.builder(allocator, location, new NoOpFlightProducer()).authHandler(
@@ -53,7 +53,7 @@ public class TestAuth {
   /** An auth handler that sends an error should not block the server forever. */
   @Test(expected = RuntimeException.class)
   public void clientError() throws Exception {
-    try (final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
         final FlightServer s = FlightTestUtil
             .getStartedServer(
                 location -> FlightServer.builder(allocator, location, new NoOpFlightProducer()).authHandler(

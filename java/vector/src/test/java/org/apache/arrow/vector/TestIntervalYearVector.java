@@ -20,6 +20,7 @@ package org.apache.arrow.vector;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.arrow.memory.BufferAllocator;
+import org.apache.arrow.memory.DirtyRootAllocator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

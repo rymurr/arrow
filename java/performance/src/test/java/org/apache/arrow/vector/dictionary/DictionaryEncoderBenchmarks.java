@@ -24,7 +24,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.ValueVector;
 import org.apache.arrow.vector.VarCharVector;
 import org.apache.arrow.vector.types.pojo.DictionaryEncoding;
@@ -71,7 +71,7 @@ public class DictionaryEncoderBenchmarks {
       keys.add(generateUniqueKey(KEY_LENGTH));
     }
 
-    allocator = new RootAllocator(10 * 1024 * 1024);
+    allocator = DefaultBufferAllocator.create(10 * 1024 * 1024);
 
     vector = new VarCharVector("vector", allocator);
     dictionaryVector = new VarCharVector("dict", allocator);

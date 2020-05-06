@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.stream.IntStream;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.memory.util.hash.MurmurHasher;
 import org.apache.arrow.vector.testing.ValueVectorDataPopulator;
 import org.apache.arrow.vector.util.TransferPair;
@@ -40,7 +40,7 @@ public class TestBitVector {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Long.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
   }
 
   @After

@@ -34,7 +34,7 @@ import java.util.List;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.ipc.message.ArrowFieldNode;
 import org.apache.arrow.vector.ipc.message.ArrowMessage;
 import org.apache.arrow.vector.ipc.message.ArrowRecordBatch;
@@ -153,7 +153,7 @@ public class MessageSerializerTest {
     // second half is "undefined"
     byte[] values = new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
-    BufferAllocator alloc = new RootAllocator(Long.MAX_VALUE);
+    BufferAllocator alloc = DefaultBufferAllocator.create(Long.MAX_VALUE);
     ArrowBuf validityb = buf(alloc, validity);
     ArrowBuf valuesb = buf(alloc, values);
 

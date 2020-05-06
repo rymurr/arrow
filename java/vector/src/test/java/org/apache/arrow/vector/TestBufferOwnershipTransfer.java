@@ -22,8 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.arrow.memory.BufferAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.memory.ReferenceManager;
-import org.apache.arrow.memory.RootAllocator;
 import org.apache.arrow.vector.complex.ListVector;
 import org.apache.arrow.vector.types.pojo.ArrowType;
 import org.apache.arrow.vector.types.pojo.FieldType;
@@ -34,7 +34,7 @@ public class TestBufferOwnershipTransfer {
 
   @Test
   public void testTransferFixedWidth() {
-    BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
     BufferAllocator childAllocator1 = allocator.newChildAllocator("child1", 100000, 100000);
     BufferAllocator childAllocator2 = allocator.newChildAllocator("child2", 100000, 100000);
 
@@ -59,7 +59,7 @@ public class TestBufferOwnershipTransfer {
 
   @Test
   public void testTransferVariableWidth() {
-    BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
     BufferAllocator childAllocator1 = allocator.newChildAllocator("child1", 100000, 100000);
     BufferAllocator childAllocator2 = allocator.newChildAllocator("child2", 100000, 100000);
 
@@ -99,7 +99,7 @@ public class TestBufferOwnershipTransfer {
 
   @Test
   public void emptyListTransferShouldNotTriggerSchemaChange() {
-    final BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    final BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
 
     final Pointer<Boolean> trigger1 = new Pointer<>();
     final Pointer<Boolean> trigger2 = new Pointer<>();

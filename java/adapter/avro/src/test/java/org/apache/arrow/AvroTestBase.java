@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.FieldVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.complex.ListVector;
@@ -59,7 +59,7 @@ public class AvroTestBase {
 
   @Before
   public void init() {
-    BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
     config = new AvroToArrowConfigBuilder(allocator).build();
   }
 

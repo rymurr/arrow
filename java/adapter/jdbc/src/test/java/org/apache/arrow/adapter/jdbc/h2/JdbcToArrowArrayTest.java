@@ -17,7 +17,9 @@
 
 package org.apache.arrow.adapter.jdbc.h2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.sql.Array;
 import java.sql.Connection;
@@ -37,7 +39,7 @@ import org.apache.arrow.adapter.jdbc.JdbcToArrowConfig;
 import org.apache.arrow.adapter.jdbc.JdbcToArrowConfigBuilder;
 import org.apache.arrow.adapter.jdbc.JdbcToArrowUtils;
 import org.apache.arrow.memory.ArrowBuf;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.Float4Vector;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VarCharVector;
@@ -154,7 +156,8 @@ public class JdbcToArrowArrayTest {
     insertRows(rowCount, intArrays, floatArrays, strArrays);
 
     final JdbcToArrowConfigBuilder builder =
-        new JdbcToArrowConfigBuilder(new RootAllocator(Integer.MAX_VALUE), JdbcToArrowUtils.getUtcCalendar(), false);
+        new JdbcToArrowConfigBuilder(DefaultBufferAllocator.create(Integer.MAX_VALUE),
+            JdbcToArrowUtils.getUtcCalendar(), false);
     builder.setArraySubTypeByColumnNameMap(arrayFieldMapping);
 
     final JdbcToArrowConfig config = builder.build();
@@ -198,7 +201,8 @@ public class JdbcToArrowArrayTest {
     insertRows(rowCount, intArrays, floatArrays, stringArrays);
 
     final JdbcToArrowConfigBuilder builder =
-        new JdbcToArrowConfigBuilder(new RootAllocator(Integer.MAX_VALUE), JdbcToArrowUtils.getUtcCalendar(), false);
+        new JdbcToArrowConfigBuilder(DefaultBufferAllocator.create(Integer.MAX_VALUE),
+            JdbcToArrowUtils.getUtcCalendar(), false);
     builder.setArraySubTypeByColumnNameMap(arrayFieldMapping);
 
     final JdbcToArrowConfig config = builder.build();

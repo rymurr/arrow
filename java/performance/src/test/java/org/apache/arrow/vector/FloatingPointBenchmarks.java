@@ -20,7 +20,7 @@ package org.apache.arrow.vector;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.compare.ApproxEqualsVisitor;
 import org.apache.arrow.vector.compare.Range;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -67,7 +67,7 @@ public class FloatingPointBenchmarks {
    */
   @Setup
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
     floatVector1 = new Float4Vector("vector", allocator);
     floatVector2 = new Float4Vector("vector", allocator);
     doubleVector1 = new Float8Vector("vector", allocator);

@@ -17,7 +17,11 @@
 
 package org.apache.arrow.vector.complex.writer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +31,7 @@ import java.util.Set;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.AutoCloseables;
 import org.apache.arrow.vector.BigIntVector;
 import org.apache.arrow.vector.Float4Vector;
@@ -85,7 +89,7 @@ public class TestComplexWriter {
 
   @Before
   public void init() {
-    allocator = new RootAllocator(Integer.MAX_VALUE);
+    allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
   }
 
   @After

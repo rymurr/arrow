@@ -22,7 +22,7 @@ import java.io.IOException;
 import org.apache.arrow.flight.FlightServer;
 import org.apache.arrow.flight.Location;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.AutoCloseables;
 
 /**
@@ -77,7 +77,7 @@ public class ExampleFlightServer implements AutoCloseable {
    *  Main method starts the server listening to localhost:12233.
    */
   public static void main(String[] args) throws Exception {
-    final BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+    final BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
     final ExampleFlightServer efs = new ExampleFlightServer(a, Location.forGrpcInsecure("localhost", 12233));
     efs.start();
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {

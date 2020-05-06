@@ -22,7 +22,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.Float8Vector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.FloatingPointPrecision;
@@ -64,7 +64,7 @@ public class TestLeak {
   @Test
   public void testCancelingDoGetDoesNotLeak() throws Exception {
     final CountDownLatch callFinished = new CountDownLatch(1);
-    try (final BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
         final FlightServer s =
             FlightTestUtil.getStartedServer(
                 (location) -> FlightServer.builder(allocator, location, new LeakFlightProducer(allocator, callFinished))
@@ -86,7 +86,7 @@ public class TestLeak {
   @Test
   public void testCancelingDoPutDoesNotBlock() throws Exception {
     final CountDownLatch callFinished = new CountDownLatch(1);
-    try (final BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
         final FlightServer s =
             FlightTestUtil.getStartedServer(
                 (location) -> FlightServer.builder(allocator, location, new LeakFlightProducer(allocator, callFinished))

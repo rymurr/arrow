@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.util.Collections2;
 import org.apache.arrow.vector.complex.FixedSizeListVector;
 import org.apache.arrow.vector.complex.ListVector;
@@ -74,7 +74,7 @@ public class TestConvert {
   @Test
   public void list() throws Exception {
     java.util.List<Field> children = new ArrayList<>();
-    try (BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
          ListVector writeVector = ListVector.empty("list", allocator);
          FixedSizeListVector writeFixedVector = FixedSizeListVector.empty("fixedlist", 5, allocator)) {
       Field listVectorField = writeVector.getField();

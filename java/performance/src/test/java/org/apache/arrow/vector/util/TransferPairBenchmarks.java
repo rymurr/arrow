@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VarCharVector;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -58,7 +58,7 @@ public class TransferPairBenchmarks {
    */
   @Setup
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
     intVector = new IntVector("intVector", allocator);
     varCharVector = new VarCharVector("varcharVector", allocator);
 

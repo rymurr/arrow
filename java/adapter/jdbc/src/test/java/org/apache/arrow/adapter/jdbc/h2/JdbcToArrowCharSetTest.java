@@ -37,7 +37,7 @@ import org.apache.arrow.adapter.jdbc.JdbcToArrowConfigBuilder;
 import org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper;
 import org.apache.arrow.adapter.jdbc.JdbcToArrowUtils;
 import org.apache.arrow.adapter.jdbc.Table;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VarCharVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.pojo.Schema;
@@ -109,28 +109,33 @@ public class JdbcToArrowCharSetTest extends AbstractJdbcToArrowTest {
    */
   @Test
   public void testJdbcToArrowValues() throws SQLException, IOException {
-    testDataSets(JdbcToArrow.sqlToArrow(conn, table.getQuery(), new RootAllocator(Integer.MAX_VALUE),
+    testDataSets(JdbcToArrow.sqlToArrow(conn, table.getQuery(),
+        DefaultBufferAllocator.create(Integer.MAX_VALUE),
         Calendar.getInstance()));
-    testDataSets(JdbcToArrow.sqlToArrow(conn, table.getQuery(), new RootAllocator(Integer.MAX_VALUE)));
+    testDataSets(JdbcToArrow.sqlToArrow(conn, table.getQuery(),
+        DefaultBufferAllocator.create(Integer.MAX_VALUE)));
     testDataSets(JdbcToArrow.sqlToArrow(conn.createStatement().executeQuery(table.getQuery()),
-        new RootAllocator(Integer.MAX_VALUE), Calendar.getInstance()));
+        DefaultBufferAllocator.create(Integer.MAX_VALUE), Calendar.getInstance()));
     testDataSets(JdbcToArrow.sqlToArrow(conn.createStatement().executeQuery(table.getQuery())));
     testDataSets(JdbcToArrow.sqlToArrow(conn.createStatement().executeQuery(table.getQuery()),
-        new RootAllocator(Integer.MAX_VALUE)));
+        DefaultBufferAllocator.create(Integer.MAX_VALUE)));
     testDataSets(JdbcToArrow.sqlToArrow(conn.createStatement().executeQuery(table.getQuery()),
         Calendar.getInstance()));
     testDataSets(JdbcToArrow.sqlToArrow(
         conn.createStatement().executeQuery(table.getQuery()),
-        new JdbcToArrowConfigBuilder(new RootAllocator(Integer.MAX_VALUE), Calendar.getInstance()).build()));
+        new JdbcToArrowConfigBuilder(DefaultBufferAllocator.create(Integer.MAX_VALUE),
+            Calendar.getInstance()).build()));
     testDataSets(JdbcToArrow.sqlToArrow(
         conn,
         table.getQuery(),
-        new JdbcToArrowConfigBuilder(new RootAllocator(Integer.MAX_VALUE), Calendar.getInstance()).build()));
+        new JdbcToArrowConfigBuilder(DefaultBufferAllocator.create(Integer.MAX_VALUE),
+            Calendar.getInstance()).build()));
   }
 
   @Test
   public void testJdbcSchemaMetadata() throws SQLException {
-    JdbcToArrowConfig config = new JdbcToArrowConfigBuilder(new RootAllocator(0), Calendar.getInstance(), true).build();
+    JdbcToArrowConfig config = new JdbcToArrowConfigBuilder(DefaultBufferAllocator.create(0),
+        Calendar.getInstance(), true).build();
     ResultSetMetaData rsmd = conn.createStatement().executeQuery(table.getQuery()).getMetaData();
     Schema schema = JdbcToArrowUtils.jdbcToArrowSchema(rsmd, config);
     JdbcToArrowTestHelper.assertFieldMetadataMatchesResultSetMetadata(rsmd, schema);

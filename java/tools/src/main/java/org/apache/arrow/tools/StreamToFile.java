@@ -26,7 +26,7 @@ import java.io.OutputStream;
 import java.nio.channels.Channels;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.ipc.ArrowFileWriter;
 import org.apache.arrow.vector.ipc.ArrowStreamReader;
@@ -39,7 +39,7 @@ public class StreamToFile {
    *  Reads an Arrow stream from <code>in</code> and writes it to <code>out</code>.
    */
   public static void convert(InputStream in, OutputStream out) throws IOException {
-    BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
     try (ArrowStreamReader reader = new ArrowStreamReader(in, allocator)) {
       VectorSchemaRoot root = reader.getVectorSchemaRoot();
       // load the first batch before instantiating the writer so that we have any dictionaries.

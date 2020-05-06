@@ -26,7 +26,7 @@ import org.apache.arrow.AvroToArrowConfig;
 import org.apache.arrow.AvroToArrowConfigBuilder;
 import org.apache.arrow.AvroToArrowVectorIterator;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.avro.Schema;
@@ -70,7 +70,7 @@ public class AvroAdapterBenchmarks {
    */
   @Setup
   public void prepare() throws Exception {
-    BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+    BufferAllocator allocator = DefaultBufferAllocator.create(Integer.MAX_VALUE);
     config = new AvroToArrowConfigBuilder(allocator).build();
 
     String schemaStr = "{\n" + " \"namespace\": \"org.apache.arrow.avro\",\n" +

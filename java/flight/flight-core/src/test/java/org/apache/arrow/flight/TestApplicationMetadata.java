@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
 import org.apache.arrow.flight.FlightClient.PutListener;
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.types.pojo.ArrowType;
@@ -197,7 +197,7 @@ public class TestApplicationMetadata {
   }
 
   private void test(BiConsumer<BufferAllocator, FlightClient> fun) {
-    try (final BufferAllocator allocator = new RootAllocator(Long.MAX_VALUE);
+    try (final BufferAllocator allocator = DefaultBufferAllocator.create(Long.MAX_VALUE);
         final FlightServer s =
             FlightTestUtil.getStartedServer(
                 (location) -> FlightServer.builder(allocator, location, new MetadataFlightProducer(allocator)).build());

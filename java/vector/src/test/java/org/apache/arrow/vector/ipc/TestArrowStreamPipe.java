@@ -26,19 +26,16 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.TinyIntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
-import org.apache.arrow.vector.ipc.ArrowStreamReader;
-import org.apache.arrow.vector.ipc.ArrowStreamWriter;
-import org.apache.arrow.vector.ipc.MessageSerializerTest;
 import org.apache.arrow.vector.types.pojo.Schema;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class TestArrowStreamPipe {
   Schema schema = MessageSerializerTest.testSchema();
-  BufferAllocator alloc = new RootAllocator(Long.MAX_VALUE);
+  BufferAllocator alloc = DefaultBufferAllocator.create(Long.MAX_VALUE);
 
   private final class WriterThread extends Thread {
 
@@ -87,7 +84,7 @@ public class TestArrowStreamPipe {
   private final class ReaderThread extends Thread {
     private int batchesRead = 0;
     private final ArrowStreamReader reader;
-    private final BufferAllocator alloc = new RootAllocator(Long.MAX_VALUE);
+    private final BufferAllocator alloc = DefaultBufferAllocator.create(Long.MAX_VALUE);
     private boolean done = false;
 
     public ReaderThread(ReadableByteChannel sourceChannel)

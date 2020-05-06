@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.arrow.memory.ArrowBuf;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.apache.arrow.vector.holders.NullableVarCharHolder;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -60,7 +60,7 @@ public class VariableWidthVectorBenchmarks {
    */
   @Setup
   public void prepare() {
-    allocator = new RootAllocator(ALLOCATOR_CAPACITY);
+    allocator = DefaultBufferAllocator.create(ALLOCATOR_CAPACITY);
     vector = new VarCharVector("vector", allocator);
     vector.allocateNew(VECTOR_CAPACITY, VECTOR_LENGTH);
     arrowBuff = allocator.buffer(VECTOR_LENGTH);

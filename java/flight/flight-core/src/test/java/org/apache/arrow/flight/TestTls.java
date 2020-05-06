@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 
 import org.apache.arrow.flight.FlightClient.Builder;
 import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.memory.DefaultBufferAllocator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -89,7 +89,7 @@ public class TestTls {
   void test(Consumer<Builder> testFn) {
     final FlightTestUtil.CertKeyPair certKey = FlightTestUtil.exampleTlsCerts().get(0);
     try (
-        BufferAllocator a = new RootAllocator(Long.MAX_VALUE);
+        BufferAllocator a = DefaultBufferAllocator.create(Long.MAX_VALUE);
         Producer producer = new Producer();
         FlightServer s =
             FlightTestUtil.getStartedServer(
